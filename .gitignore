@@ -1,6 +1,7 @@
 .gradle
 bin
 build/
+gradle/
 log/
 target/
 
