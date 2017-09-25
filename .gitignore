@@ -1,0 +1,15 @@
+.gradle
+bin
+build/
+log/
+target/
+
+gradle-app.setting
+!gradle-wrapper.jar
+
+hs_err_pid
+
+# Eclipse
+.classpath
+.project
+.settings/

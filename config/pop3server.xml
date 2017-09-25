@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+	<server>
+		<port>80</port>
+		<backlog>10</backlog>
+	</server>
+	<folders>
+		<folder>
+			<path>in:inbox</path>
+		</folder>
+		<folder>
+			<path>in:sent</path>
+			<category>SENT</category>
+		</folder>
+	</folders>
+	<zimbra>
+		<serviceUrl>https://www.zimbra.com//</serviceUrl>
+		<searchRequestLimit>500</searchRequestLimit>
+		<messageIdStore>config/UIDStore.db</messageIdStore>
+	</zimbra>
+</config>
