@@ -6,14 +6,25 @@ ZCP(Zimbra Connector for POP3) is a POP3 service for Zimbra wemail.
 
 If you want to use webmail with Outlook, you can install it on your PC and use it.
 
-```sequence
-Outlook->ZCP: Request POP3 protocol
-ZCP->Webmail: Request Http Protocol
-Webmail-->ZCP:Response Http Protocol
-ZCP-->Outlook:Response POP3 response
 ```
-
-
+     ┌───────┐                 ┌───┐                 ┌───────┐
+     │Outlook│                 │ZCP│                 │Webmail│
+     └───┬───┘                 └─┬─┘                 └───┬───┘
+         │Request POP3 protocol  │                       │    
+         │──────────────────────>│                       │    
+         │                       │                       │    
+         │                       │Request Http Protocol  │    
+         │                       │──────────────────────>│    
+         │                       │                       │    
+         │                       │Response Http Protocol │    
+         │                       │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │    
+         │                       │                       │    
+         │Response POP3 response │                       │    
+         │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                       │    
+     ┌───┴───┐                 ┌─┴─┐                 ┌───┴───┐
+     │Outlook│                 │ZCP│                 │Webmail│
+     └───────┘                 └───┘                 └───────┘
+ ```
 
 ## 2. Limitation
 
@@ -23,19 +34,37 @@ ZCP only supports retrieving and downloading. In other words, deletion processin
 
 # 3. Interface Secenario
 
-```sequence
-Outlook->ZCP:POP3:USER <username>
-Outlook->ZCP:POP3:PASS <password>
-ZCP->Webmail:HTTP request logout
-ZCP->Webmail:HTTP request login(username,password)
-ZCP->Webmail:HTTP request searchRequest(query,searchRequestLimit)
-Outlook->ZCP:POP3:UIDL
-Outlook->ZCP:POP3:RETR <uid>
-ZCP->Webmail:HTTP request download(uid)
-Webmail-->ZCP:HTTP Content body
-ZCP-->Outlook:POP3 response
-Outlook->ZCP:POP3:DELE
-Outlook->ZCP:POP3:QUIT
+```
+     ┌───────┐               ┌───┐                                               ┌───────┐
+     │Outlook│               │ZCP│                                               │Webmail│
+     └───┬───┘               └─┬─┘                                               └───┬───┘
+         │POP3:USER <username> │                                                     │    
+         │────────────────────>│                                                     │    
+         │POP3:PASS <password> │                                                     │    
+         │────────────────────>│                                                     │    
+         │                     │                HTTP request logout                  │    
+         │                     │────────────────────────────────────────────────────>│    
+         │                     │       HTTP request login(username,password)         │    
+         │                     │────────────────────────────────────────────────────>│    
+         │                     │HTTP request searchRequest(query,searchRequestLimit) │    
+         │                     │────────────────────────────────────────────────────>│    
+         │     POP3:UIDL       │                                                     │    
+         │────────────────────>│                                                     │    
+         │  POP3:RETR <uid>    │                                                     │    
+         │────────────────────>│                                                     │    
+         │                     │             HTTP request download(uid)              │    
+         │                     │────────────────────────────────────────────────────>│    
+         │                     │                 HTTP Content body                   │    
+         │                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │    
+         │   POP3 response     │                                                     │    
+         │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │    
+         │     POP3:DELE       │                                                     │    
+         │────────────────────>│                                                     │    
+         │     POP3:QUIT       │                                                     │    
+         │────────────────────>│                                                     │    
+     ┌───┴───┐               ┌─┴─┐                                               ┌───┴───┐
+     │Outlook│               │ZCP│                                               │Webmail│
+     └───────┘               └───┘                                               └───────┘
 ```
 
 
