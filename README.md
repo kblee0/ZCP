@@ -34,39 +34,7 @@ ZCP only supports retrieving and downloading. In other words, deletion processin
 
 # 3. Interface Secenario
 
-```
-     ┌───────┐               ┌───┐                                               ┌───────┐
-     │Outlook│               │ZCP│                                               │Webmail│
-     └───┬───┘               └─┬─┘                                               └───┬───┘
-         │POP3:USER <username> │                                                     │    
-         │────────────────────>│                                                     │    
-         │POP3:PASS <password> │                                                     │    
-         │────────────────────>│                                                     │    
-         │                     │                HTTP request logout                  │    
-         │                     │────────────────────────────────────────────────────>│    
-         │                     │       HTTP request login(username,password)         │    
-         │                     │────────────────────────────────────────────────────>│    
-         │                     │HTTP request searchRequest(query,searchRequestLimit) │    
-         │                     │────────────────────────────────────────────────────>│    
-         │     POP3:UIDL       │                                                     │    
-         │────────────────────>│                                                     │    
-         │  POP3:RETR <uid>    │                                                     │    
-         │────────────────────>│                                                     │    
-         │                     │             HTTP request download(uid)              │    
-         │                     │────────────────────────────────────────────────────>│    
-         │                     │                 HTTP Content body                   │    
-         │                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │    
-         │   POP3 response     │                                                     │    
-         │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │    
-         │     POP3:DELE       │                                                     │    
-         │────────────────────>│                                                     │    
-         │     POP3:QUIT       │                                                     │    
-         │────────────────────>│                                                     │    
-     ┌───┴───┐               ┌─┴─┐                                               ┌───┴───┐
-     │Outlook│               │ZCP│                                               │Webmail│
-     └───────┘               └───┘                                               └───────┘
-```
-
+![ZCP Interface](https://raw.githubusercontent.com/kblee0/ZCP/master/ZCP_if.svg)
 
 
 ## 3. Configuration
