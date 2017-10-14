@@ -6,25 +6,7 @@ ZCP(Zimbra Connector for POP3) is a POP3 service for Zimbra wemail.
 
 If you want to use webmail with Outlook, you can install it on your PC and use it.
 
-```
-     ┌───────┐                 ┌───┐                 ┌───────┐
-     │Outlook│                 │ZCP│                 │Webmail│
-     └───┬───┘                 └─┬─┘                 └───┬───┘
-         │Request POP3 protocol  │                       │    
-         │──────────────────────>│                       │    
-         │                       │                       │    
-         │                       │Request Http Protocol  │    
-         │                       │──────────────────────>│    
-         │                       │                       │    
-         │                       │Response Http Protocol │    
-         │                       │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │    
-         │                       │                       │    
-         │Response POP3 response │                       │    
-         │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                       │    
-     ┌───┴───┐                 ┌─┴─┐                 ┌───┴───┐
-     │Outlook│                 │ZCP│                 │Webmail│
-     └───────┘                 └───┘                 └───────┘
- ```
+![ZCP Concept](ZCP_concept.svg)
 
 ## 2. Limitation
 
@@ -34,7 +16,7 @@ ZCP only supports retrieving and downloading. In other words, deletion processin
 
 # 3. Interface Secenario
 
-![ZCP Interface](https://raw.githubusercontent.com/kblee0/ZCP/master/ZCP_if.svg)
+![ZCP Interface](ZCP_if.svg)
 
 
 ## 3. Configuration
