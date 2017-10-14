@@ -251,7 +251,7 @@ public class ZimbraClient {
 		jsonQuery.put("_content", query);
 		jsonSearchRequest.put("_jsns", "urn:zimbraMail");
 		jsonSearchRequest.put("types", "message");
-		jsonSearchRequest.put("limit", new Integer(DEFAULT_SEARCH_LIMIT));
+		jsonSearchRequest.put("limit", new Integer(this.searchLimit));
 		jsonSearchRequest.put("resultMode", "IDS");
 		jsonSearchRequest.put("query", jsonQuery);
 
