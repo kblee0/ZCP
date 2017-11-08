@@ -3,6 +3,8 @@
 	<server>
 		<port>80</port>
 		<backlog>10</backlog>
+		<!-- serviceType: folder, zcp -->
+		<serviceType>zcp</serviceType>
 	</server>
 	<folders>
 		<folder>
