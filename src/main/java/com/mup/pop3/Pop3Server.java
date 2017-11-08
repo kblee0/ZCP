@@ -26,6 +26,9 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.CharsetUtil;
 
 public class Pop3Server {
+	private final int SERVICE_TYPE_FOLDER = 1;
+	private final int SERVICE_TYPE_ZCP = 0;
+
 	private final String CONFIG_FILE = "pop3server.xml";
 	private final int DEFAULT_READ_TIMEOUT = 120;
 	
@@ -36,6 +39,7 @@ public class Pop3Server {
 	private EventLoopGroup childGroup;
 	private int serverPort = 110;
 	private int backLog = 10;
+	private int serviceType = SERVICE_TYPE_ZCP;
 	private boolean isStarted = false;
 	private XMLConfiguration config = null;
 
@@ -67,6 +71,14 @@ public class Pop3Server {
 
 			serverPort = config.getInt("server.port");
 			backLog = config.getInt("server.backlog");
+			if( "folder".equalsIgnoreCase(config.getString("server.serviceType")) ) {
+				serviceType = SERVICE_TYPE_FOLDER;
+				log.info("SERVICE TYPE(folder|zcp) = folder");
+			}
+			else {
+				log.info("SERVICE TYPE(folder|zcp) = zcp");
+			}
+			
 			folderList = new HashMap<String, String>();
 			for (int i = 0;; i++) {
 				String path = config.getString("folders.folder(" + i + ").path");
@@ -109,13 +121,21 @@ public class Pop3Server {
 		serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 			@Override
 			protected void initChannel(SocketChannel socketChannel) throws Exception {
-				ZimbraMailBox mbox = ZimbraMailBox.create(config.getString("zimbra.serviceUrl"));
-				mbox.setFolderList(folderList);
-				if (config.getString("zimbra.messageIdStore") != null) {
-					mbox.setDbFile(config.getString("zimbra.messageIdStore"));
+				Mailbox mbox = null;
+				
+				if( serviceType == SERVICE_TYPE_ZCP ) {
+					ZimbraMailBox zmbox = ZimbraMailBox.create(config.getString("zimbra.serviceUrl"));
+					zmbox.setFolderList(folderList);
+					if (config.getString("zimbra.messageIdStore") != null) {
+						zmbox.setDbFile(config.getString("zimbra.messageIdStore"));
+					}
+					if (config.getInteger("zimbra.searchRequestLimit", -1) > 0) {
+						zmbox.setSearchLimit(config.getInteger("zimbra.searchRequestLimit", -1));
+					}
+					mbox = zmbox;
 				}
-				if (config.getInteger("zimbra.searchRequestLimit", -1) > 0) {
-					mbox.setSearchLimit(config.getInteger("zimbra.searchRequestLimit", -1));
+				else {
+					mbox = EmlFilesMailbox.create().setFolderList(folderList);
 				}
 
 				socketChannel.pipeline().addLast(new ReadTimeoutHandler(DEFAULT_READ_TIMEOUT))
