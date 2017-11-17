@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class ConfigFile {
-
 	private ConfigFile() {
 	}
 
@@ -13,12 +12,20 @@ public class ConfigFile {
 	public static File getFile(String name) {
 		File file = new File(name);
 		
+		// Filename only
 		if( file.getName().equals(name) ) {
-			File configFile = new File("config/" + name);
+			// 1. config/<Filename>
+			File configFile  = new File("config/" + name);
+			if( configFile.exists() ) {
+				return configFile;
+			}
+			// 2. current dir is <base>/bin, config is <base>/config/<File>
+			configFile = new File("../config/" + name);
 			if( configFile.exists() ) {
 				return configFile;
 			}
 		}
+		// 3. ./<File>
 		if( file.exists() ) {
 			return file;
 		}
